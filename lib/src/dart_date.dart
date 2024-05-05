@@ -60,8 +60,8 @@ class Interval {
       throw RangeError('Intervals don\'t cross');
     }
 
-    final intersectionStart = Date.max(start, other.start);
-    final intersectionEnd = Date.min(end, other.end);
+    final intersectionStart = DateTimeExtension.max(start, other.start);
+    final intersectionEnd = DateTimeExtension.min(end, other.end);
 
     return Interval(intersectionStart, intersectionEnd);
   }
@@ -120,7 +120,7 @@ class Interval {
 
 const int MILLISECONDS_IN_WEEK = 604800000;
 
-extension Date on DateTime {
+extension DateTimeExtension on DateTime {
   /// Number of seconds since epoch time / A.K.A Unix timestamp
   ///
   /// The Unix epoch (or Unix time or POSIX time or Unix timestamp) is the number of
@@ -149,7 +149,7 @@ extension Date on DateTime {
         : DateFormat(pattern, locale).parse(dateString, isUTC);
   }
 
-  /// Create a [Date] object from a Unix timestamp
+  /// Create a [DateTime] object from a Unix timestamp
   static DateTime unix(int seconds) => fromSecondsSinceEpoch(seconds);
 
   /// Tomorrow at same hour / minute / second than now
@@ -158,13 +158,13 @@ extension Date on DateTime {
   /// Yesterday at same hour / minute / second than now
   static DateTime get yesterday => DateTime.now().previousDay;
 
-  /// Current date (Same as [Date.now])
+  /// Current date (Same as [DateTime.now])
   static DateTime get today => DateTime.now();
 
-  /// Get [Date] object as UTC of current object.
+  /// Get [DateTime] object as UTC of current object.
   DateTime get toUTC => toUtc();
 
-  /// Get [Date] object in LocalTime of current object.
+  /// Get [DateTime] object in LocalTime of current object.
   DateTime get toLocalTime => toLocal();
 
   DateTime get clone => DateTime.fromMicrosecondsSinceEpoch(
@@ -198,7 +198,7 @@ extension Date on DateTime {
           : add(Duration(hours: amount));
 
   // TODO: this
-  // Date addISOYears(int amount) {
+  // DateTime addISOYears(int amount) {
   //   return this;
   // }
 
@@ -287,9 +287,9 @@ extension Date on DateTime {
     return datesArray.elementAt(index);
   }
 
-  /// Compares this Date object to [other],
+  /// Compares this DateTime object to [other],
   /// returning zero if the values are equal.
-  /// Returns a negative value if this Date [isBefore] [other]. It returns 0
+  /// Returns a negative value if this DateTime [isBefore] [other]. It returns 0
   /// if it [isAtSameMomentAs] [other], and returns a positive value otherwise
   /// (when this [isAfter] [other]).
   int compare(DateTime other) => compareTo(other);
@@ -403,7 +403,7 @@ extension Date on DateTime {
   /// Return the end of the month for this date. The result will be in the local timezone.
   DateTime get endOfMonth => DateTime(year, month + 1).subMicroseconds(1);
 
-  // Date endOfQuarter()
+  // DateTime endOfQuarter()
 
   /// Return the end of the second for this date. The result will be in the local timezone.
   DateTime get endOfSecond => clone.setMillisecond(999, 999);
@@ -581,7 +581,7 @@ extension Date on DateTime {
   /// Is the given date the first day of a month?
   bool get isFirstDayOfMonth => isSameDay(startOfMonth);
 
-  /// Return true if this date [isAfter] [Date.now]
+  /// Return true if this date [isAfter] [DateTime.now]
   bool get isFuture => isAfter(DateTime.now());
 
   /// Is the given date the last day of a month?
@@ -591,7 +591,7 @@ extension Date on DateTime {
   /// Is the given date in the leap year?
   bool get isLeapYear => year % 4 == 0 && (year % 100 != 0 || year % 400 == 0);
 
-  /// Return true if this date [isBefore] [Date.now]
+  /// Return true if this date [isBefore] [DateTime.now]
   bool get isPast => isBefore(DateTime.now());
 
   /// Check if this date is in the same day than other
